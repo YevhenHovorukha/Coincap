@@ -102,12 +102,11 @@ const TableComponent = () => {
   return (
     <div>
       <Table
-        style={{ overflow: "scroll" }}
         columns={columns}
         dataSource={newData}
         pagination={{
           position: ["bottomCenter"],
-          pageSize: 10,
+          pageSize: 5,
         }}
       />
     </div>
