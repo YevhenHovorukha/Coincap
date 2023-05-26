@@ -60,15 +60,7 @@ const columns = [
     ),
   },
 ];
-const data = [];
-for (let i = 0; i < 46; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    age: 32,
-    address: `London`,
-  });
-}
+
 const TableComponent = () => {
   const [coinData, setCoinData] = useState("");
 
@@ -110,11 +102,12 @@ const TableComponent = () => {
   return (
     <div>
       <Table
+        style={{ overflow: "scroll" }}
         columns={columns}
         dataSource={newData}
         pagination={{
           position: ["bottomCenter"],
-          pageSize: 7,
+          pageSize: 10,
         }}
       />
     </div>
