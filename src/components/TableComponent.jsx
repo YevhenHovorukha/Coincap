@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useDebugValue } from "react";
 import { Table, Tooltip, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { useSelector, useDispatch } from "react-redux/es/exports";
 import axios from "axios";
+import { getCoinData } from "../Redux/reducers/coinDataSlice";
 
 const formatNumber = (number) => {
   if (number >= 1000000000) {
@@ -62,23 +64,7 @@ const columns = [
 ];
 
 const TableComponent = () => {
-  const [coinData, setCoinData] = useState("");
-
-  useEffect(() => {
-    const getCoinData = async () => {
-      try {
-        const getData = await axios.get("https://api.coincap.io/v2/assets", {
-          params: {
-            limit: 40,
-          },
-        });
-        setCoinData(getData.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getCoinData();
-  }, []);
+  const coinData = useSelector((state) => state.coinData.data);
 
   const newData = coinData
     ? coinData.map((item, index) => {
@@ -98,7 +84,7 @@ const TableComponent = () => {
         };
       })
     : null;
-  console.log(newData);
+
   return (
     <div>
       <Table

@@ -1,11 +1,27 @@
 import React from "react";
-import { Layout, Typography } from "antd";
-import { Col, Row, Statistic } from "antd";
+import { Layout, Typography, Tooltip, Button } from "antd";
+import { WalletOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux/es/exports";
 
 const { Header } = Layout;
 const { Title, Text } = Typography;
 
 const HeaderComponent = () => {
+  const coinData = useSelector((state) => state.coinData.data);
+  const textItems = coinData
+    ? coinData.slice(0, 3).map((item) => {
+        return (
+          <Text
+            key={item.id}
+            type="secondary"
+            style={{ color: "white", textAlign: "center" }}
+          >
+            {item.name} <br /> {`${(+item.priceUsd).toFixed(2)}$`}
+          </Text>
+        );
+      })
+    : null;
+
   return (
     <Header style={{ display: "flex", alignItems: "center" }}>
       <div
@@ -20,27 +36,24 @@ const HeaderComponent = () => {
         <Title level={5} style={{ color: "white", textAlign: "right" }}>
           Popular <br /> Cryptocurrency
         </Title>
-
-        <Text
-          type="secondary"
-          color="white"
-          style={{ color: "white", textAlign: "center" }}
-        >
-          Bitcoin <br /> 26453.15$
-        </Text>
-
-        <Text type="secondary" style={{ color: "white", textAlign: "right" }}>
-          Ethereum <br /> 1805.25$
-        </Text>
-
-        <Text type="secondary" style={{ color: "white", textAlign: "right" }}>
-          Tether <br /> 1.00$
-        </Text>
+        {textItems}
       </div>
-      <div style={{ marginLeft: "auto" }}>
-        <Text type="secondary" style={{ color: "white", textAlign: "right" }}>
-          Ant Design{" "}
-        </Text>
+      <div
+        style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}
+      >
+        <Button
+          className="header--button"
+          icon={<WalletOutlined style={{ fontSize: "30px" }} />}
+        >
+          <Text
+            type="secondary"
+            style={{ textAlign: "left", lineHeight: 1.1, color: "#001529" }}
+          >
+            Total:
+            <br />
+            1824.70$
+          </Text>
+        </Button>
       </div>
     </Header>
   );
