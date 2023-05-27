@@ -1,17 +1,14 @@
 import React, { useEffect } from "react";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
-import { Space, Table, Tag } from "antd";
 import "./App.css";
 import HeaderComponent from "./components/HeaderComponent";
-import TableComponent from "./components/TableComponent";
 import { getCoinData } from "./Redux/reducers/coinDataSlice";
 import { useDispatch } from "react-redux/es/exports";
-
-const { Footer, Content } = Layout;
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Main from "./pages/Main";
+import CurrentCurrency from "./pages/CurrentCurrency";
 
 const App = () => {
   const dispatch = useDispatch();
-  const items = [{ title: "Home" }, { title: "List" }, { title: "App" }];
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,23 +21,15 @@ const App = () => {
     fetchData();
   }, [dispatch]);
   return (
-    <>
-      <HeaderComponent />
-      <Content style={{ padding: "0 50px" }}>
-        <Breadcrumb style={{ margin: "16px 0" }} items={items}></Breadcrumb>
-        <div
-          className="site-layout-content"
-          style={{
-            backgroundColor: "white",
-          }}
-        >
-          <TableComponent />
-        </div>
-      </Content>
-      <Footer style={{ textAlign: "center" }}>
-        Ant Design ©2023 Created by Ant UED
-      </Footer>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HeaderComponent />}>
+          <Route index element={<Main />} />
+          <Route path="*" element={<h1>NOT FOUND</h1>} />
+          <Route path=":id" element={<CurrentCurrency />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 

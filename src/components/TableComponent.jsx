@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useDebugValue } from "react";
+import React from "react";
 import { Table, Tooltip, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useSelector, useDispatch } from "react-redux/es/exports";
-import axios from "axios";
-import { getCoinData } from "../Redux/reducers/coinDataSlice";
+import { useSelector } from "react-redux/es/exports";
+import { useNavigate } from "react-router-dom";
 
 const formatNumber = (number) => {
   if (number >= 1000000000) {
@@ -25,7 +24,9 @@ const columns = [
   {
     title: "",
     dataIndex: "symbol",
-    render: (text) => <span style={{ color: "red" }}>{text}</span>,
+    render: (text) => (
+      <span style={{ color: "red", fontWeight: "bold" }}>{text}</span>
+    ),
   },
   {
     title: "Name",
@@ -64,12 +65,14 @@ const columns = [
 ];
 
 const TableComponent = () => {
+  const navigate = useNavigate();
   const coinData = useSelector((state) => state.coinData.data);
 
   const newData = coinData
     ? coinData.map((item, index) => {
         return {
           key: item.id,
+          id: item.id,
           number: index + 1,
           symbol: item.symbol,
           name: item.name,
@@ -94,6 +97,9 @@ const TableComponent = () => {
           position: ["bottomCenter"],
           pageSize: 5,
         }}
+        onRow={(record) => ({
+          onClick: () => navigate(`/${record.id}`),
+        })}
       />
     </div>
   );
