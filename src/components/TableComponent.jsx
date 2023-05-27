@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, Tooltip, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux/es/exports";
 import { useNavigate } from "react-router-dom";
+import ModalTable from "./ModalTable";
 
 const formatNumber = (number) => {
   if (number >= 1000000000) {
@@ -16,55 +17,125 @@ const formatNumber = (number) => {
   }
 };
 
-const columns = [
-  {
-    title: "№",
-    dataIndex: "number",
-  },
-  {
-    title: "",
-    dataIndex: "symbol",
-    render: (text) => (
-      <span style={{ color: "red", fontWeight: "bold" }}>{text}</span>
-    ),
-  },
-  {
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: "VWAP(24Hr)",
-    dataIndex: "vwap24Hr",
-  },
-  {
-    title: "Change(24Hr)",
-    dataIndex: "change24Hr",
-  },
-  {
-    title: "MarketCap",
-    dataIndex: "marketCapUsd",
-  },
-  {
-    title: "Price",
-    dataIndex: "priceUsd",
-  },
-  {
-    title: "Buy",
-    dataIndex: "buy",
-    render: (text) => (
-      <Tooltip title={text}>
-        <Button
-          type="primary"
-          style={{ backgroundColor: "red" }}
-          shape="circle"
-          icon={<PlusOutlined />}
-        />
-      </Tooltip>
-    ),
-  },
-];
+// const columns = [
+//   {
+//     title: "№",
+//     dataIndex: "number",
+//   },
+//   {
+//     title: "",
+//     dataIndex: "symbol",
+//     render: (text) => (
+//       <span style={{ color: "red", fontWeight: "bold" }}>{text}</span>
+//     ),
+//   },
+//   {
+//     title: "Name",
+//     dataIndex: "name",
+//   },
+//   {
+//     title: "VWAP(24Hr)",
+//     dataIndex: "vwap24Hr",
+//   },
+//   {
+//     title: "Change(24Hr)",
+//     dataIndex: "change24Hr",
+//   },
+//   {
+//     title: "MarketCap",
+//     dataIndex: "marketCapUsd",
+//   },
+//   {
+//     title: "Price",
+//     dataIndex: "priceUsd",
+//   },
+//   {
+//     title: "Buy",
+//     dataIndex: "buy",
+//     render: (text) => (
+//       <Tooltip title={text}>
+//         <Button
+//           type="primary"
+//           style={{ backgroundColor: "red" }}
+//           shape="circle"
+//           icon={<PlusOutlined />}
+//         />
+//       </Tooltip>
+//     ),
+//   },
+// ];
 
 const TableComponent = () => {
+  const columns = [
+    {
+      title: "№",
+      dataIndex: "number",
+    },
+    {
+      title: "",
+      dataIndex: "symbol",
+      render: (text) => (
+        <span style={{ color: "red", fontWeight: "bold" }}>{text}</span>
+      ),
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: "VWAP(24Hr)",
+      dataIndex: "vwap24Hr",
+    },
+    {
+      title: "Change(24Hr)",
+      dataIndex: "change24Hr",
+    },
+    {
+      title: "MarketCap",
+      dataIndex: "marketCapUsd",
+    },
+    {
+      title: "Price",
+      dataIndex: "priceUsd",
+    },
+    {
+      title: "Buy",
+      dataIndex: "buy",
+      render: (text, record) => (
+        <>
+          <Tooltip title={text}>
+            <Button
+              type="primary"
+              style={{ backgroundColor: "red" }}
+              shape="circle"
+              icon={<PlusOutlined />}
+              onClick={(event) => {
+                event.stopPropagation();
+                showModal();
+              }}
+            />
+          </Tooltip>
+          <ModalTable
+            isModalOpen={isModalOpen}
+            handleOk={handleOk}
+            handleCancel={handleCancel}
+            id={record.id}
+          />
+        </>
+      ),
+    },
+  ];
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const navigate = useNavigate();
   const coinData = useSelector((state) => state.coinData.data);
 
@@ -89,7 +160,7 @@ const TableComponent = () => {
     : null;
 
   return (
-    <div>
+    <>
       <Table
         columns={columns}
         dataSource={newData}
@@ -101,7 +172,7 @@ const TableComponent = () => {
           onClick: () => navigate(`/${record.id}`),
         })}
       />
-    </div>
+    </>
   );
 };
 export default TableComponent;

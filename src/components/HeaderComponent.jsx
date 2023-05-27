@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { Layout, Typography, Button } from "antd";
 import { WalletOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux/es/exports";
 import { Outlet } from "react-router-dom";
+import ModalHeader from "./ModalHeader";
 
 const { Header, Footer } = Layout;
 const { Title, Text } = Typography;
 
 const HeaderComponent = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const coinData = useSelector((state) => state.coinData.data);
   const textItems = coinData
     ? coinData.slice(0, 3).map((item) => {
@@ -46,6 +59,7 @@ const HeaderComponent = () => {
           <Button
             className="header--button"
             icon={<WalletOutlined style={{ fontSize: "30px" }} />}
+            onClick={showModal}
           >
             <Text
               type="secondary"
@@ -58,9 +72,15 @@ const HeaderComponent = () => {
           </Button>
         </div>
       </Header>
+      <ModalHeader
+        showModal={showModal}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        isOpen={isModalOpen}
+      />
       <Outlet />
       <Footer style={{ textAlign: "center" }}>
-        // Ant Design ©2023 Created by Ant UED //
+        Ant Design ©2023 Created by Ant UED
       </Footer>
     </>
   );
