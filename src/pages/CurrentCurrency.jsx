@@ -30,7 +30,7 @@ const CurrentCurrency = () => {
 
   return (
     <StyledContent>
-      <StyledBreadcrumb items={items}></StyledBreadcrumb>
+      <StyledBreadcrumb items={items} />
       <StyledLayoutContent>
         <TableCurrentCurrency id={params.id} />
         <ChartComponent id={params.id} />

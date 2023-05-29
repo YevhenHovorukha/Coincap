@@ -20,7 +20,7 @@ const Main = () => {
 
   return (
     <StyledContent>
-      <StyledBreadcrumb items={items}></StyledBreadcrumb>
+      <StyledBreadcrumb items={items} />
       <TableComponent />
     </StyledContent>
   );

@@ -5,18 +5,7 @@ import { useSelector } from "react-redux/es/exports";
 import { useNavigate } from "react-router-dom";
 import ModalTable from "./ModalTable";
 import styled from "styled-components";
-
-const formatNumber = (number) => {
-  if (number >= 1000000000) {
-    return (number / 1000000000).toFixed(1) + " Billion";
-  } else if (number >= 1000000) {
-    return (number / 1000000).toFixed(1) + " M";
-  } else if (number >= 1000) {
-    return (number / 1000).toFixed(1) + " K";
-  } else {
-    return number.toString();
-  }
-};
+import { formatNumber } from "../utils/formatNumber";
 
 const StyledButton = styled(Button)`
   && {
