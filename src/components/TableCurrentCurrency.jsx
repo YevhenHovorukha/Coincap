@@ -2,6 +2,7 @@ import React from "react";
 import { Table } from "antd";
 import { useSelector } from "react-redux/es/exports";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 const formatNumber = (number) => {
   if (number >= 1000000000) {
@@ -21,10 +22,17 @@ const columns = [
     dataIndex: "information",
   },
   {
-    title: "Cyrrency Data",
+    title: "Currency Data",
     dataIndex: "currencyData",
   },
 ];
+
+const StyledTable = styled(Table)`
+  width: 50%;
+  @media (max-width: 650px) {
+    width: 100%;
+  }
+`;
 
 const TableCurrentCurrency = ({ id }) => {
   const navigate = useNavigate();
@@ -38,18 +46,18 @@ const TableCurrentCurrency = ({ id }) => {
 
   const objCoinForTable = currentCoin
     ? {
-        ["Price"]: `${(+currentCoin.priceUsd).toFixed(2)}$`,
-        ["Market Cap"]: formatNumber(currentCoin.marketCapUsd) + `$`,
-        ["Max Supply"]: currentCoin.maxSupply
+        Price: `${(+currentCoin.priceUsd).toFixed(2)}$`,
+        "Market Cap": formatNumber(currentCoin.marketCapUsd) + `$`,
+        "Max Supply": currentCoin.maxSupply
           ? formatNumber(currentCoin.maxSupply) + `$`
           : null,
-        ["Total Supply"]: formatNumber(currentCoin.supply) + `$`,
-        ["Trading volume per 24 hours"]:
+        "Total Supply": formatNumber(currentCoin.supply) + `$`,
+        "Trading volume per 24 hours":
           formatNumber(currentCoin.volumeUsd24Hr) + `$`,
-        ["Average price by trading volume for 24 hours"]: `${(+currentCoin.vwap24Hr).toFixed(
+        "Average price by trading volume for 24 hours": `${(+currentCoin.vwap24Hr).toFixed(
           2
         )}$`,
-        ["Percent price change in 24 hours"]: `${(+currentCoin.changePercent24Hr).toFixed(
+        "Percent price change in 24 hours": `${(+currentCoin.changePercent24Hr).toFixed(
           2
         )}%`,
       }
@@ -62,12 +70,8 @@ const TableCurrentCurrency = ({ id }) => {
     : null;
 
   return (
-    <Table
-      columns={columns}
-      dataSource={arrCoin}
-      pagination={false}
-      style={{ width: "50%" }}
-    />
+    <StyledTable columns={columns} dataSource={arrCoin} pagination={false} />
   );
 };
+
 export default TableCurrentCurrency;

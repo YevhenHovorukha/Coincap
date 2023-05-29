@@ -4,6 +4,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux/es/exports";
 import { useNavigate } from "react-router-dom";
 import ModalTable from "./ModalTable";
+import styled from "styled-components";
 
 const formatNumber = (number) => {
   if (number >= 1000000000) {
@@ -17,55 +18,39 @@ const formatNumber = (number) => {
   }
 };
 
-// const columns = [
-//   {
-//     title: "№",
-//     dataIndex: "number",
-//   },
-//   {
-//     title: "",
-//     dataIndex: "symbol",
-//     render: (text) => (
-//       <span style={{ color: "red", fontWeight: "bold" }}>{text}</span>
-//     ),
-//   },
-//   {
-//     title: "Name",
-//     dataIndex: "name",
-//   },
-//   {
-//     title: "VWAP(24Hr)",
-//     dataIndex: "vwap24Hr",
-//   },
-//   {
-//     title: "Change(24Hr)",
-//     dataIndex: "change24Hr",
-//   },
-//   {
-//     title: "MarketCap",
-//     dataIndex: "marketCapUsd",
-//   },
-//   {
-//     title: "Price",
-//     dataIndex: "priceUsd",
-//   },
-//   {
-//     title: "Buy",
-//     dataIndex: "buy",
-//     render: (text) => (
-//       <Tooltip title={text}>
-//         <Button
-//           type="primary"
-//           style={{ backgroundColor: "red" }}
-//           shape="circle"
-//           icon={<PlusOutlined />}
-//         />
-//       </Tooltip>
-//     ),
-//   },
-// ];
+const StyledButton = styled(Button)`
+  && {
+    background-color: red;
+  }
+`;
+const StyledTable = styled(Table)`
+  @media (max-width: 750px) {
+    overflow: scroll;
+  }
+  .ant-pagination-item-active > a {
+    color: red;
+    :hover {
+      color: red;
+    }
+  }
+  .ant-pagination-item-active {
+    border-color: red;
+    :hover {
+      border-color: red;
+    }
+  }
+`;
+
+const StyledBoltRed = styled.span`
+  color: red;
+  font-weight: bold;
+`;
 
 const TableComponent = () => {
+  const [selectedItemName, setSelectedItemName] = useState(null);
+  const [selectedItemPrice, setSelectedItemPrice] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const columns = [
     {
       title: "№",
@@ -74,9 +59,7 @@ const TableComponent = () => {
     {
       title: "",
       dataIndex: "symbol",
-      render: (text) => (
-        <span style={{ color: "red", fontWeight: "bold" }}>{text}</span>
-      ),
+      render: (text) => <StyledBoltRed>{text}</StyledBoltRed>,
     },
     {
       title: "Name",
@@ -104,30 +87,24 @@ const TableComponent = () => {
       render: (text, record) => (
         <>
           <Tooltip title={text}>
-            <Button
+            <StyledButton
               type="primary"
-              style={{ backgroundColor: "red" }}
               shape="circle"
               icon={<PlusOutlined />}
               onClick={(event) => {
                 event.stopPropagation();
-                showModal();
+                showModal(record.name, record.priceUsd);
               }}
             />
           </Tooltip>
-          <ModalTable
-            isModalOpen={isModalOpen}
-            handleOk={handleOk}
-            handleCancel={handleCancel}
-            id={record.id}
-          />
         </>
       ),
     },
   ];
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const showModal = () => {
+  const showModal = (itemName, itemPrice) => {
+    setSelectedItemName(itemName);
+    setSelectedItemPrice(itemPrice);
     setIsModalOpen(true);
   };
   const handleOk = () => {
@@ -161,18 +138,26 @@ const TableComponent = () => {
 
   return (
     <>
-      <Table
+      <StyledTable
         columns={columns}
         dataSource={newData}
         pagination={{
           position: ["bottomCenter"],
-          pageSize: 5,
+          pageSize: 6,
         }}
         onRow={(record) => ({
           onClick: () => navigate(`/${record.id}`),
         })}
       />
+      <ModalTable
+        isModalOpen={isModalOpen}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        selectedItemName={selectedItemName}
+        selectedItemPrice={selectedItemPrice}
+      />
     </>
   );
 };
+
 export default TableComponent;

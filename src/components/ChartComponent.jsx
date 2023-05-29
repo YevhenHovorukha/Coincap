@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Line } from "@ant-design/plots";
+import styled from "styled-components";
+
+const StyledLineChart = styled(Line)`
+  width: 50%;
+  @media (max-width: 650px) {
+    width: 100%;
+  }
+`;
 
 const getData = (num) => {
   const timestamp = num;
@@ -60,7 +68,7 @@ const ChartComponent = ({ id }) => {
       }
     };
     fetchAssetHistory(currentId);
-  }, []);
+  }, [currentId]);
 
   const config = {
     data,
@@ -68,13 +76,12 @@ const ChartComponent = ({ id }) => {
     yField: "priceUsd",
     lineStyle: {
       lineWidth: 2,
-
-      stroke: "red", // Измените на 'red' для красного цвета
+      stroke: "red", // Змініть на 'red' для червоного кольору
     },
     smooth: true,
   };
 
-  return <Line {...config} style={{ width: "50%" }} />;
+  return <StyledLineChart {...config} />;
 };
 
 export default ChartComponent;

@@ -2,31 +2,40 @@ import React from "react";
 import { Breadcrumb, Layout } from "antd";
 import TableCurrentCurrency from "../components/TableCurrentCurrency";
 import ChartComponent from "../components/ChartComponent";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
 
 const { Content } = Layout;
 
+const StyledContent = styled(Content)`
+  padding: 0 50px;
+  @media (max-width: 650px) {
+    padding: 0 10px;
+`;
+
+const StyledBreadcrumb = styled(Breadcrumb)`
+  margin: 16px 0;
+`;
+
+const StyledLayoutContent = styled.div`
+  background-color: white;
+  display: flex;
+  @media (max-width: 650px) {
+    flex-direction:column
+`;
+
 const CurrentCurrency = () => {
-  const navigate = useNavigate();
   const params = useParams();
-  const items = [
-    { title: "Main", render: (title) => <Link>{title}</Link> },
-    { title: "Item" },
-  ];
+  const items = [{ title: "Main", href: "/" }, { title: params.id }];
+
   return (
-    <Content style={{ padding: "0 50px" }}>
-      <Breadcrumb style={{ margin: "16px 0" }} items={items}></Breadcrumb>
-      <div
-        className="site-layout-content"
-        style={{
-          backgroundColor: "white",
-          display: "flex",
-        }}
-      >
+    <StyledContent>
+      <StyledBreadcrumb items={items}></StyledBreadcrumb>
+      <StyledLayoutContent>
         <TableCurrentCurrency id={params.id} />
         <ChartComponent id={params.id} />
-      </div>
-    </Content>
+      </StyledLayoutContent>
+    </StyledContent>
   );
 };
 
