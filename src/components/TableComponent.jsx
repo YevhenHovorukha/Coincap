@@ -10,6 +10,9 @@ import { formatNumber } from "../utils/formatNumber";
 const StyledButton = styled(Button)`
   && {
     background-color: red;
+    :hover {
+      background-color: red;
+    }
   }
 `;
 const StyledTable = styled(Table)`

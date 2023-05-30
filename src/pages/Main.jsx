@@ -16,7 +16,7 @@ const StyledBreadcrumb = styled(Breadcrumb)`
 `;
 
 const Main = () => {
-  const items = [{ title: "/Main", href: "Coincap" }];
+  const items = [{ title: "Main", href: "/Coincap" }];
 
   return (
     <StyledContent>
