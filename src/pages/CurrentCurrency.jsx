@@ -26,7 +26,7 @@ const StyledLayoutContent = styled.div`
 
 const CurrentCurrency = () => {
   const params = useParams();
-  const items = [{ title: "Main", href: "/" }, { title: params.id }];
+  const items = [{ title: "Main", href: "/Coincap" }, { title: params.id }];
 
   return (
     <StyledContent>

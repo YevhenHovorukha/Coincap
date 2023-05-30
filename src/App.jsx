@@ -23,7 +23,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HeaderComponent />}>
+        <Route path="Coincap" element={<HeaderComponent />}>
           <Route index element={<Main />} />
           <Route path="*" element={<h1>NOT FOUND</h1>} />
           <Route path=":id" element={<CurrentCurrency />} />

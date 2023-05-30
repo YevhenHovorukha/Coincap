@@ -135,7 +135,7 @@ const TableComponent = () => {
           pageSize: 6,
         }}
         onRow={(record) => ({
-          onClick: () => navigate(`/${record.id}`),
+          onClick: () => navigate(`${record.id}`),
         })}
       />
       <ModalTable
